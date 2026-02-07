@@ -250,7 +250,7 @@
     <div class="container">
         <!-- Question Screen -->
         <div class="question-screen" id="questionScreen">
-            <h1>💖 Will you be my Valentine? 💖</h1>
+            <h1>💖 Will you be my Valentine, my love Bagdat? 💖</h1>
             
             <div class="buttons-container" id="buttonsContainer">
                 <button class="btn btn-yes" id="yesBtn" onclick="handleYes()">
@@ -266,7 +266,7 @@
 
         <!-- Success Screen -->
         <div class="success-screen" id="successScreen">
-            <h2>Yaaay! I'm so happy you said YES! ❤️</h2>
+            <h2>Yaaay! I'm so happy you said YES! ❤️<br>I love u Bagdat!</h2>
             <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcDRuN3RuMGRiZDN5aGJ5Ym5rYWZ0ZWN5NnJ4ZWJ5ZGJ5ZWJ5ZWJ5ZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/KztT2c4u8mYYUiMKdJ/giphy.gif" alt="Love celebration" onerror="this.src='https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMXE3bXB5NnR5NnR5NnR5NnR5NnR5NnR5NnR5NnQmZXA9djFfaW50ZXJuYWxfZ2lmX2J5X2lkJmN0PWc/26u4cqiYI30juCOGY/giphy.gif'">
             <div class="celebration-hearts" id="celebrationHearts"></div>
         </div>
@@ -286,6 +286,7 @@
         ];
 
         let noClickCount = 0;
+        let allowNoClick = false;
         const noBtn = document.getElementById('noBtn');
         const dramaticText = document.getElementById('dramaticText');
 
@@ -313,8 +314,12 @@
         });
 
         function moveNoButton() {
-            const container = document.querySelector('.container');
-            const containerRect = container.getBoundingClientRect();
+            // const container = document.querySelector('.container');
+            // const containerRect = container.getBoundingClientRect();
+
+             allowNoClick = Math.random() < 0.2;
+
+            if (allowNoClick) return; 
             
             const maxX = window.innerWidth - 150;
             const maxY = window.innerHeight - 70;
@@ -340,31 +345,29 @@
             }
         }
 
-        function handleNo() {
-            noClickCount++;
-            
-            // Show dramatic message
-            if (noClickCount <= dramaticMessages.length) {
-                dramaticText.textContent = dramaticMessages[noClickCount - 1];
-                dramaticText.style.animation = 'none';
-                setTimeout(() => {
-                    dramaticText.style.animation = 'shake 0.5s';
-                }, 10);
-            }
-            
-            // After 6 attempts, transform No button into Yes
-            if (noClickCount >= 6) {
-                noBtn.textContent = '❤️ Yes (You know you want to)';
-                noBtn.className = 'btn btn-yes';
-                noBtn.onclick = handleYes;
-                noBtn.style.transform = 'scale(1)';
-                noBtn.style.position = 'relative';
-                noBtn.style.left = 'auto';
-                noBtn.style.top = 'auto';
-            } else {
-                moveNoButton();
-            }
+     function handleNo() {
+        noClickCount++;
+        
+        if (noClickCount <= dramaticMessages.length) {
+            dramaticText.textContent = dramaticMessages[noClickCount - 1];
+            dramaticText.style.animation = 'none';
+            setTimeout(() => {
+                dramaticText.style.animation = 'shake 0.5s';
+            }, 10);
         }
+        
+        if (noClickCount >= 6) {
+            noBtn.textContent = '❤️ Yes (You know you want to)';
+            noBtn.className = 'btn btn-yes';
+            noBtn.onclick = handleYes;
+            noBtn.style.position = 'relative';
+            noBtn.style.left = 'auto';
+            noBtn.style.top = 'auto';
+        } else {
+            moveNoButton();
+        }
+     }
+
 
         function handleYes() {
             const questionScreen = document.getElementById('questionScreen');
